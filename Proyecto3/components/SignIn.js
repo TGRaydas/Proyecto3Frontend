@@ -42,14 +42,10 @@ export default class SignIn extends Component {
               global.userID = responseJson.userid
               if(responseJson.state != "success"){
                 alert("Hubo un error en las credenciales");
-                DefaultPreference.set('email', null).then(function() {console.log('done')});
-                DefaultPreference.set('password', null).then(function() {console.log('done')});
                 return false
               }
               
               navigation.push('drawerStack')
-              DefaultPreference.set('email', getUsername()).then(function() {console.log('done')});
-              DefaultPreference.set('password', getPassword()).then(function() {console.log('done')});
               return true
           });
     

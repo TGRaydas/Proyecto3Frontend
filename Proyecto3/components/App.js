@@ -30,7 +30,7 @@ import Friends from './Friends'
 
 const { width, height } = Dimensions.get('window');
 
-global.domain = 'http://192.168.1.107'
+global.domain = 'http://192.168.43.123:3000'
 
 
 
@@ -65,7 +65,7 @@ const Navigator = createBottomTabNavigator(
       headerTintColor: 'white',
     }),
     drawerPosition: 'right',
-    initialRouteName: 'Games'
+    initialRouteName: 'Friends'
   }
 );
 
@@ -95,7 +95,7 @@ const AppStack = createStackNavigator({
   // Default config for all screens
   headerMode: 'none',
   title: 'Main',
-  initialRouteName: 'drawerStack'
+  initialRouteName: 'loginStack'
 })
 
 

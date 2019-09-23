@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, Dimensions, StyleSheet, FlatList, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
-
+import { View, Text, Dimensions, StyleSheet, ScrollView, FlatList , Image, ActivityIndicator, TouchableOpacity } from 'react-native';
+import FriendRequest from './FriendRequest'
 export default class Friends extends Component {
     constructor(props){
         super(props);
@@ -33,11 +33,14 @@ export default class Friends extends Component {
       }
       return(
         <View style={{flex: 1, paddingTop:20}}>
-          <FlatList
-            data={this.state.dataSource}
-            renderItem={({item}) => <Text>{item.user_receiver_id}</Text>}
-            keyExtractor={({id}, index) => id}
-          />
+          <FlatList 
+                data = {this.state.dataSource[0]}
+                keyExtractor={item => item.user_id}
+                renderItem = {({item}) => (
+                    <FriendRequest item={item} />
+                )}
+                
+              />
         </View>
       );
     }

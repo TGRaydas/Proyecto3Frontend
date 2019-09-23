@@ -9,10 +9,10 @@ export default class FriendRequest extends Component {
 
     render() {
       return (
-              <View>
-                  <Text>{this.props.nickname}</Text>
-                  <TouchableOpacity>Accept</TouchableOpacity>
-                  <TouchableOpacity>Reject</TouchableOpacity>
+              <View style={styles.container}>
+                  <Text>{this.props.item.nickname}</Text>
+                  <TouchableOpacity><Text>Accept</Text></TouchableOpacity>
+                  <TouchableOpacity><Text>Reject</Text></TouchableOpacity>
               </View>
       )
     }

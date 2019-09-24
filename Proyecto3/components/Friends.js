@@ -9,13 +9,14 @@ export default class Friends extends Component {
         this.state = { isLoading: true};
     }
     componentDidMount(){
-      return fetch(global.domain + '/friends/'+global.userID)
+      return fetch(global.domain + 'friends/'+global.userID)
         .then((response) => response.json())
         .then((responseJson) => {
   
           this.setState({
             isLoading: false,
             dataSource: responseJson.friends,
+            pending: responseJson.pending
           }, function(){
             console.log(responseJson.friends)
           });
@@ -38,12 +39,12 @@ export default class Friends extends Component {
         {
           title: 'Friend Requests',
           state: 1,
-          data: this.state.dataSource[0],
+          data: this.state.pending,
         },
         {
           title: 'Friends',
           state: 2, 
-          data: this.state.dataSource[1],
+          data: this.state.dataSource,
         }
       ];
       return(

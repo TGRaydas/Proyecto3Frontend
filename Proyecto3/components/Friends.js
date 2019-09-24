@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, Dimensions, StyleSheet, ScrollView, FlatList , Image, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, Dimensions, StyleSheet, ScrollView, FlatList , Image, SectionList, ActivityIndicator, TouchableOpacity } from 'react-native';
 import FriendRequest from './FriendRequest'
+import MyFriends from './MyFriend'
 export default class Friends extends Component {
     constructor(props){
         super(props);
@@ -23,6 +24,7 @@ export default class Friends extends Component {
           console.error(error);
         });
     }
+    
     render(){
       if(this.state.isLoading){
         return(
@@ -31,16 +33,30 @@ export default class Friends extends Component {
           </View>
         )
       }
+      const DATA = [
+        {
+          title: 'Friend Requests',
+          state: 1,
+          data: this.state.dataSource[0],
+        },
+        {
+          title: 'Friends',
+          state: 2, 
+          data: this.state.dataSource[1],
+        }
+      ];
       return(
         <View style={{flex: 1, paddingTop:20}}>
-          <FlatList 
-                data = {this.state.dataSource[0]}
-                keyExtractor={item => item.user_id}
-                renderItem = {({item}) => (
-                    <FriendRequest item={item} />
-                )}
-                
-              />
+          <SectionList
+            sections={DATA}
+            keyExtractor={(item, index) => item + index}
+            renderItem={({ item, section: {state} }) =>  <FriendRequest state={state} item={item} />}
+            renderSectionHeader={({ section: { title } }) => (
+              <Text style={styles.header}>{title}</Text>
+            )}
+          />
+          
+          
         </View>
       );
     }

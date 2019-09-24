@@ -8,13 +8,22 @@ export default class FriendRequest extends Component {
 
 
     render() {
-      return (
-              <View style={styles.container}>
+      if(this.props.state == 1){
+        return (
+                <View style={styles.container}>
+                    <Text>{this.props.item.nickname}</Text>
+                    <TouchableOpacity><Text>Accept</Text></TouchableOpacity>
+                    <TouchableOpacity><Text>Reject</Text></TouchableOpacity>
+                </View>
+        )
+      }
+      else{
+        return(
+          <View style={styles.container}>
                   <Text>{this.props.item.nickname}</Text>
-                  <TouchableOpacity><Text>Accept</Text></TouchableOpacity>
-                  <TouchableOpacity><Text>Reject</Text></TouchableOpacity>
-              </View>
-      )
+          </View>
+        )
+      }
     }
 }
 
@@ -22,6 +31,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     height: 100,
+    justifyContent: 'space-around',
     width: Dimensions.get("window").width
   },
   nameApp:{

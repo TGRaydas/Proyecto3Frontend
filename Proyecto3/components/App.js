@@ -30,7 +30,7 @@ import Friends from './Friends'
 
 const { width, height } = Dimensions.get('window');
 
-global.domain = 'http://192.168.43.123:3000'
+global.domain = 'http://190.162.2.76/'
 
 
 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, Dimensions, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 export default class FriendRequest extends Component {
     constructor(props){
@@ -53,8 +54,14 @@ export default class FriendRequest extends Component {
         return (
                 <View style={styles.container}>
                     <Text>{this.props.item.nickname}</Text>
-                    <TouchableOpacity onPress={() => this.handleAcceptRequest(this.props.item.user_id)}><Text>Accept</Text></TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.handleRejectRequest(this.props.item.user_id)}><Text>Reject</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.handleAcceptRequest(this.props.item.user_id)}>
+                      <Icon name='check-circle' color='green' size={30}></Icon>
+                      
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.handleRejectRequest(this.props.item.user_id)}>
+                    <Icon name='times-circle' color='red' size={30}></Icon>
+                      
+                    </TouchableOpacity>
                 </View>
         )
       }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, Dimensions, StyleSheet, TextInput, ActivityIndicator, TouchableOpacity, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { NavigationActions } from 'react-navigation';
+import * as firebase from 'react-native-firebase';
 import Title from './Title'
 export default class SignUp extends Component {
     constructor(props){
@@ -9,6 +10,7 @@ export default class SignUp extends Component {
         setState = this.setState.bind(this)
         getPassword = this.getPassword.bind(this)
         getUsername = this.getUsername.bind(this)
+        firebaseSignUp = this.firebaseSignUp.bind(this)
     }
     static navigationOptions = {
         title: 'Sign Up!',
@@ -19,6 +21,13 @@ export default class SignUp extends Component {
     }
     getPassword(){
       return this.state.password;
+    }
+    async firebaseSignUp(email, password){
+      try {
+          await firebase.auth().createUserWithEmailAndPassword(email, password)
+      } catch (error) {
+        alert(error)
+      }
     }
     handleCreateUser(){
       setState({isLoading: true})
@@ -41,6 +50,7 @@ export default class SignUp extends Component {
             dataSource: responseJson.status,
           }, function(){
               global.userID = responseJson.userid
+              //firebaseSignUp(getUsername(), getPassword());
               navigation.push('drawerStack')
           });
     

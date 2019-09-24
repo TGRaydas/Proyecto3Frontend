@@ -1,5 +1,19 @@
 import React, { Component } from 'react';
 import { View, Text, Dimensions, StyleSheet, TextInput, ActivityIndicator, TouchableOpacity, Button } from 'react-native';
+import * as firebase from 'react-native-firebase';
+
+
+const getToken = async () => {
+  let fcmToken = await AsyncStorage.getItem('fcmToken');
+  if (!fcmToken) {
+    fcmToken = await firebase.messaging().getToken();
+    if (fcmToken) {
+      await AsyncStorage.setItem('fcmToken', fcmToken);
+    }
+  }
+};
+
+
 export default class SignIn extends Component {
     constructor(props){
         super(props);
@@ -9,17 +23,49 @@ export default class SignIn extends Component {
         getUsername = this.getUsername.bind(this)
         requestSignIn = this.requestSignIn.bind(this)
         navigation = this.props.navigation
+        firebaseSignIn = this.firebaseSignIn.bind(this)
+        sendToken = this.sendToken.bind(this)
     }
     componentDidMount(){
         
     }
-
+    async firebaseSignIn(email, password){
+      try {
+        await firebase.auth().signInWithEmailAndPassword(email, password)
+        //sendToken()
+      } catch (error) {
+        
+      }
+    }
+    
     getUsername(){
       return this.state.username;
     }
     getPassword(){
       return this.state.password;
     }
+    async sendToken(){
+      //getToken();
+      fetch(global.domain+'/user/token/',{
+        method: 'POST',
+        headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          token: await AsyncStorage.getItem('fcmToken'),
+          }),
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            
+        })
+        .catch((error) =>{
+          console.error(error);
+          return false
+        });
+    }
+    
     requestSignIn(email, password){
       fetch(global.domain+'/users/sign_in',{
         method: 'POST',
@@ -34,7 +80,7 @@ export default class SignIn extends Component {
         })
         .then((response) => response.json())
         .then((responseJson) => {
-    
+          
           setState({
             isLoading: false,
             dataSource: responseJson,
@@ -44,7 +90,7 @@ export default class SignIn extends Component {
                 alert("Hubo un error en las credenciales");
                 return false
               }
-              
+              //firebaseSignIn(email, password)
               navigation.push('drawerStack')
               return true
           });

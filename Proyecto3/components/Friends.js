@@ -1,9 +1,72 @@
 import React, { Component } from 'react';
-import { View, Text, Dimensions, StyleSheet, ScrollView, FlatList , Image, SectionList, ActivityIndicator, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { View, Text, Dimensions, AsyncStorage, StyleSheet, ScrollView, FlatList , Image, SectionList, ActivityIndicator, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import FriendRequest from './FriendRequest'
 import MyFriends from './MyFriend'
 import SearchPeople from './SearchPeople'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import * as firebase from 'react-native-firebase'
+const getToken = async () => {
+  let fcmToken = await AsyncStorage.getItem('fcmToken');
+  if (!fcmToken) {
+    fcmToken = await firebase.messaging().getToken();
+    if (fcmToken) {
+      await AsyncStorage.setItem('fcmToken', fcmToken);
+    }
+  }
+};
+
+const requestPermission = async () =>
+  firebase
+    .messaging()
+    .requestPermission()
+    .then(() => {
+      getToken();
+    })
+    .catch(error => {
+      console.warn(`${error} permission rejected`);
+    });
+
+
+export const checkPermission = async () => {
+  const enabled = await firebase.messaging().hasPermission();
+  if (enabled) {
+    getToken();
+  } else {
+    requestPermission();
+  }
+};
+
+const notificationListener = () =>
+  firebase.notifications().onNotification(notification => {
+    const {
+      notifications: {
+        Android: {
+          Priority: { Max }
+        }
+      }
+    } = firebase;
+    notification.android.setChannelId(CHANNEL_NOTIFICATIONS.CHANNEL_ID);
+    notification.android.setPriority(Max);
+    notification.setData(notification.data);
+    firebase.notifications().displayNotification(notification);
+  });
+
+export const notificationOpenBackListener = async () => {
+
+  const notificationOpen = await firebase.notifications().getInitialNotification();
+  if (notificationOpen) {
+    // Agregar el codigo que se considere necesario
+  }
+};
+/*export const createChannel = () => {
+  const channel = new firebase.notifications.Android.Channel(
+    CHANNEL_NOTIFICATIONS.CHANNEL_ID,
+    CHANNEL_NOTIFICATIONS.CHANNEL_NAME,
+    firebase.notifications.Android.Importance.Max
+  ).setDescription(CHANNEL_NOTIFICATIONS.CHANNEL_DESCRIPTION);
+  firebase.notifications().android.createChannel(channel);
+};*/
+
 export default class Friends extends Component {
     constructor(props){
         super(props);
@@ -32,6 +95,11 @@ export default class Friends extends Component {
     }
     componentDidMount(){
       this.loadData() 
+      
+      //createChannel();
+      //checkPermission();
+      //notificationListener();
+      //notificationOpenBackListener();
     }
     handlerRefresh(){
       loadData()

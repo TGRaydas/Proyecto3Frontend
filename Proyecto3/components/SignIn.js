@@ -3,7 +3,7 @@ import { View, Text, Dimensions, StyleSheet, TextInput, ActivityIndicator, Touch
 export default class SignIn extends Component {
     constructor(props){
         super(props);
-        this.state = {username:'pgrand@miuandes.cl', password: '1616831c', showPass:true, isLoading:false}
+        this.state = {username:'pgrand@miuandes.cl', password: 'password', showPass:true, isLoading:false}
         setState = this.setState.bind(this)
         getPassword = this.getPassword.bind(this)
         getUsername = this.getUsername.bind(this)

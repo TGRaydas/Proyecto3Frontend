@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, Dimensions, StyleSheet, ScrollView, FlatList , Image, SectionList, ActivityIndicator, TouchableOpacity } from 'react-native';
 import FriendRequest from './FriendRequest'
 import MyFriends from './MyFriend'
+import SearchPeople from './SearchPeople'
 export default class Friends extends Component {
     constructor(props){
         super(props);
@@ -47,6 +48,7 @@ export default class Friends extends Component {
       ];
       return(
         <View style={{flex: 1, paddingTop:20}}>
+          <SearchPeople />
           <SectionList
             sections={DATA}
             keyExtractor={(item, index) => item + index}

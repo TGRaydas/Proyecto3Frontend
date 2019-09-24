@@ -19,7 +19,7 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createDrawerNavigator} from 'react-navigation-drawer'
 import { createStackNavigator} from 'react-navigation-stack'
 import { createAppContainer} from 'react-navigation'
-
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 import SignUp from './SignUp'
 import SignIn from './SignIn'
@@ -52,8 +52,14 @@ const CustomDrawerContentComponent = props => (
 
 const Navigator = createBottomTabNavigator(
   {
-    Games: {screen: Games},
-    Friends: {screen: Friends},
+    Games: {screen: Games, 
+      navigationOptions:{
+      tabBarIcon: () => (<Icon name='gamepad' size={20} color='black'/>)
+    }},
+    Friends: {screen: Friends,
+    navigationOptions:{
+      tabBarIcon : () => (<Icon name='users' size={20} color='black'/>)
+    }},
     //Maps: {screen: Maps},
     //LogOut: {screen: LogOut}
   },

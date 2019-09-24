@@ -53,25 +53,39 @@ const CustomDrawerContentComponent = props => (
 const Navigator = createBottomTabNavigator(
   {
     Games: {screen: Games, 
-      navigationOptions:{
-      tabBarIcon: () => (<Icon name='gamepad' size={20} color='black'/>)
-    }},
+      navigationOptions:
+      {
+        tabBarIcon : ({focused}) =>  {
+          
+          return <Icon name='gamepad' size={20} color='white'/>
+        }
+      }
+    },
     Friends: {screen: Friends,
-    navigationOptions:{
-      tabBarIcon : () => (<Icon name='users' size={20} color='black'/>)
-    }},
+    navigationOptions:
+    {
+      tabBarIcon : () =>  {return <Icon name='users' size={20} color='white'/>}
+    }
+    }
     //Maps: {screen: Maps},
     //LogOut: {screen: LogOut}
   },
+  
   {
     navigationOptions:  ({ navigation }) =>  ({
       headerTitleStyle: { textAlign:"center",  },
       headerTitle: <Title />,
-      headerStyle: {backgroundColor: '#006c92'},
-      headerTintColor: 'white',
+      headerStyle: {backgroundColor: '#FFC466'},
+      headerTintColor: 'white'
     }),
     drawerPosition: 'right',
-    initialRouteName: 'Friends'
+    initialRouteName: 'Friends',
+    tabBarOptions:{
+      activeBackgroundColor: 'brown',
+      inactiveTintColor: 'gray',
+      activeTintColor: 'white',
+      inactiveTintColor: 'gray'
+    },
   }
 );
 
@@ -117,6 +131,11 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
  });
+
+ const iconMap = {
+   games: <Icon name='gamepad' size={20} color='white'/>,
+   friends: <Icon name='users' size={20} color='white'/>
+ }
 
 const App = createAppContainer(AppStack);
 export default App

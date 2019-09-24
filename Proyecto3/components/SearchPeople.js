@@ -91,8 +91,9 @@ export default class SearchPeople extends Component {
     render() {
       return (
         <React.Fragment>
-             <View>   
-            <KeyboardAvoidingView>
+            <View> 
+           
+            
                 <TextInput style={styles.textInput} value={this.state.inputValue} onChangeText={(text) => this.inputManager(text)} placeholder={'Buscar personas'} />
                 {this.state.isSearching && <ActivityIndicator size="large" color="red" />}
                 <ScrollView style={this.getScrollViewStyle()}>
@@ -104,7 +105,6 @@ export default class SearchPeople extends Component {
                         description={location.nickname}
                   />))}
                 </ScrollView>
-            </KeyboardAvoidingView>
             
        </View>
       </React.Fragment>
@@ -114,15 +114,15 @@ export default class SearchPeople extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 2,
     backgroundColor: 'white',
-    width: Dimensions.get("window").width - 40
+    width: Dimensions.get("window").width - 40,
+    flexDirection: 'row',
   },
   textInput: {
     backgroundColor: 'rgb(255, 255, 255)',
     width: Dimensions.get("window").width - 40,
     height: 40,
-    marginTop:10,
     paddingLeft: 10,
     marginHorizontal: 20,
     borderRadius: 20,

@@ -7,7 +7,7 @@ export default class Title extends Component {
     }
     render() {
       return (
-          <View><Text>Peter</Text></View>
+          <View><Text>CachoApp</Text></View>
               /*<Image
                   style={{height:45, width: '50%'}}
                   source={require('./images/BlueHeader.png')}

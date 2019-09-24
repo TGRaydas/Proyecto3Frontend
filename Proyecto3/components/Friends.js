@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text, Dimensions, StyleSheet, ScrollView, FlatList , Image, SectionList, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, Dimensions, StyleSheet, ScrollView, FlatList , Image, SectionList, ActivityIndicator, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import FriendRequest from './FriendRequest'
 import MyFriends from './MyFriend'
 import SearchPeople from './SearchPeople'
+import Icon from 'react-native-vector-icons/FontAwesome'
 export default class Friends extends Component {
     constructor(props){
         super(props);
@@ -49,7 +50,11 @@ export default class Friends extends Component {
       ];
       return(
         <View style={{flex: 1, paddingTop:20}}>
+          <View style={{flexDirection: 'row'}}>
+          <Icon style={{marginTop: 10}} name='search' size={20} color='black'/>
           <SearchPeople />
+          </View>
+          <KeyboardAvoidingView>
           <SectionList
             sections={DATA}
             keyExtractor={(item, index) => item + index}
@@ -58,6 +63,7 @@ export default class Friends extends Component {
               <Text style={styles.header}>{title}</Text>
             )}
           />
+          </KeyboardAvoidingView>
           
           
         </View>

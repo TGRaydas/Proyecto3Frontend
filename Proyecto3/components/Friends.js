@@ -66,6 +66,9 @@ export default class Friends extends Component {
 }
 
 const styles = StyleSheet.create({
+  header:{
+    padding: 20,
+  },
   container: {
     flexDirection: 'row',
     position: 'absolute',

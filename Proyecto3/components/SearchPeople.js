@@ -9,17 +9,38 @@ export default class SearchPeople extends Component {
         super(props);
         this.state = {inputLenght: 0, inputStart: 1, inputValue: '', resultData: [], isSearching:false}
         this.setInputText = this.setInputText.bind(this)
+        getInputText = this.getInputText.bind(this)
     }
     componentDidMount() {
         // Instead of navigator.geolocation, just use Geolocation.
     }
-
+    handlerSendRequest(text){
+      fetch(global.domain + 'create_request', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: global.userID,
+          user_sender: text,
+          state: 1
+        })
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+          alert("Se envió la solicitud")
+      })
+    }
     clearSearch(){
         this.setState({resultData: []})
     }
-
+    getInputText(){
+      return this.state.inputValue;
+    }
     setInputText(text){
-        this.setState({inputValue: text})
+        this.setState({inputValue: ''})
+        this.handlerSendRequest(text)
         this.clearSearch()
     }
 
@@ -70,7 +91,6 @@ export default class SearchPeople extends Component {
     render() {
       return (
         <React.Fragment>
-          <TouchableOpacity style={{marginLeft: 20}}><Text>Send</Text></TouchableOpacity>
              <View>   
             <KeyboardAvoidingView>
                 <TextInput style={styles.textInput} value={this.state.inputValue} onChangeText={(text) => this.inputManager(text)} placeholder={'Buscar personas'} />
@@ -85,6 +105,7 @@ export default class SearchPeople extends Component {
                   />))}
                 </ScrollView>
             </KeyboardAvoidingView>
+            
        </View>
       </React.Fragment>
       )
@@ -101,6 +122,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(255, 255, 255)',
     width: Dimensions.get("window").width - 40,
     height: 40,
+    marginTop:10,
     paddingLeft: 10,
     marginHorizontal: 20,
     borderRadius: 20,

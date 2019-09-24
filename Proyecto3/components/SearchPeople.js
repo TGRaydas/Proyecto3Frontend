@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import {StyleSheet, Text, ScrollView, View, ActivityIndicator, Dimensions, KeyboardAvoidingView, TextInput} from 'react-native';
-import LocationItem from '../Locationitem'
+import UserSearch from './UserSearch'
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 export default class SearchPeople extends Component {
     constructor(props){
         super(props);
-        this.state = {inputLenght: 0, inputStart: 2, inputValue: '', resultData: [], isSearching:false}
-        setLocation = this.props.setLocation
+        this.state = {inputLenght: 0, inputStart: 1, inputValue: '', resultData: [], isSearching:false}
         this.setInputText = this.setInputText.bind(this)
     }
     componentDidMount() {
@@ -21,18 +21,17 @@ export default class SearchPeople extends Component {
     setInputText(text){
         this.setState({inputValue: text})
         this.clearSearch()
-        this.getGeocode(text)
     }
 
     fiendsRequests(){
         this.setState({isSearching: true})
-        requestFriendsUrl = global.domain + 'search_friends'
-        fetch(requestPlacesUrl)
+        requestFriendsUrl = global.domain + 'search_friends?query=' + this.state.inputValue
+        fetch(requestFriendsUrl)
             .then((response) => response.json())
             .then((responseJson) => {
         this.setState({
           isLoading: false,
-          resultData: responseJson.predictions,
+          resultData: responseJson.profiles,
         }, function(){
             this.setState({isSearching: false})
         });
@@ -45,7 +44,7 @@ export default class SearchPeople extends Component {
     getScrollViewStyle(){
         if(this.props.viewAdapter == 1){
           return {
-            marginTop: 40,
+            marginTop: 0,
             backgroundColor: 'white',
             width: Dimensions.get("window").width - 40
           }
@@ -62,7 +61,7 @@ export default class SearchPeople extends Component {
 
     inputManager(text){
         this.setState({inputValue: text, inputLenght: text.length})
-        if (this.state.inputLenght > 3){
+        if (this.state.inputLenght > 1){
             this.fiendsRequests();
         }
     }
@@ -71,17 +70,18 @@ export default class SearchPeople extends Component {
     render() {
       return (
         <React.Fragment>
+          <TouchableOpacity style={{marginLeft: 20}}><Text>Send</Text></TouchableOpacity>
              <View>   
             <KeyboardAvoidingView>
-                <TextInput style={styles.textInput} value={this.state.inputValue} onChangeText={(text) => this.inputManager(text)} placeholder={'Ingrese destino'} />
+                <TextInput style={styles.textInput} value={this.state.inputValue} onChangeText={(text) => this.inputManager(text)} placeholder={'Buscar personas'} />
                 {this.state.isSearching && <ActivityIndicator size="large" color="red" />}
                 <ScrollView style={this.getScrollViewStyle()}>
                     {this.state.resultData.map(location => (
-                    <LocationItem
+                    <UserSearch
                         {...location}
                         setText = {this.setInputText}
-                        key={location.place_id}
-                        description={location.description}
+                        key={location.id}
+                        description={location.nickname}
                   />))}
                 </ScrollView>
             </KeyboardAvoidingView>
@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(255, 255, 255)',
     width: Dimensions.get("window").width - 40,
     height: 40,
-    marginTop: 40,
     paddingLeft: 10,
     marginHorizontal: 20,
     borderRadius: 20,

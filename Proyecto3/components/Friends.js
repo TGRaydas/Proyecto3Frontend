@@ -53,7 +53,7 @@ export default class Friends extends Component {
           <SectionList
             sections={DATA}
             keyExtractor={(item, index) => item + index}
-            renderItem={({ item, section: {state} }) =>  <FriendRequest state={state} item={item} />}
+            renderItem={({ item, section: {state} }) =>  <FriendRequest state={state} user_id={item.user_id} item={item} />}
             renderSectionHeader={({ section: { title } }) => (
               <Text style={styles.header}>{title}</Text>
             )}

@@ -7,8 +7,7 @@ export default class FriendRequest extends Component {
         getUserID = this.getUserID.bind(this);
     }
     getUserID(){
-      console.log(this.props.item)
-      return this.props.item.user_id
+      return this.props.user_id
     }
     handleAcceptRequest(user_id){
       fetch(global.domain + 'update_request', {
@@ -37,7 +36,7 @@ export default class FriendRequest extends Component {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          user_id: global.user_id,
+          user_id: global.userID,
           user_sender: user_id,
           state: 0
         })
@@ -53,8 +52,8 @@ export default class FriendRequest extends Component {
         return (
                 <View style={styles.container}>
                     <Text>{this.props.item.nickname}</Text>
-                    <TouchableOpacity onPress={this.handleAcceptRequest(this.props.item.user_id)}><Text>Accept</Text></TouchableOpacity>
-                    <TouchableOpacity onPress={this.handleRejectRequest(this.props.item.user_id)}><Text>Reject</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.handleAcceptRequest(this.props.item.user_id)}><Text>Accept</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.handleRejectRequest(this.props.item.user_id)}><Text>Reject</Text></TouchableOpacity>
                 </View>
         )
       }

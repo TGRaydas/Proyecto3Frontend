@@ -5,6 +5,7 @@ export default class FriendRequest extends Component {
     constructor(props){
         super(props);
         getUserID = this.getUserID.bind(this);
+        reload = this.props.reload
     }
     getUserID(){
       return this.props.user_id
@@ -24,12 +25,12 @@ export default class FriendRequest extends Component {
       })
       .then((response) => response.json())
       .then((responseJson) => {
-
+        reload()
       })
     }
 
     handleRejectRequest(user_id){
-      fetch(global.domain + '/update_request', {
+      fetch(global.domain + 'update_request', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -43,7 +44,7 @@ export default class FriendRequest extends Component {
       })
       .then((response) => response.json())
       .then((responseJson) => {
-        
+        reload()
       })
     }
 

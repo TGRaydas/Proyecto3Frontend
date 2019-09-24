@@ -7,15 +7,18 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 export default class Friends extends Component {
     constructor(props){
         super(props);
-        this.state = { isLoading: true};
+        this.state = { isLoading: true, refreshing: false};
+        loadData = this.loadData.bind(this);
+        handlerRefresh = this.handlerRefresh.bind(this)
     }
-    componentDidMount(){
-      return fetch(global.domain + 'friends/'+global.userID)
+    loadData(){
+      fetch(global.domain + 'friends/'+global.userID)
         .then((response) => response.json())
         .then((responseJson) => {
   
           this.setState({
             isLoading: false,
+            refreshing: false,
             dataSource: responseJson.friends,
             pending: responseJson.pending
           }, function(){
@@ -27,7 +30,12 @@ export default class Friends extends Component {
           console.error(error);
         });
     }
-    
+    componentDidMount(){
+      this.loadData() 
+    }
+    handlerRefresh(){
+      loadData()
+    }
     render(){
       if(this.state.isLoading){
         return(
@@ -57,8 +65,10 @@ export default class Friends extends Component {
           <KeyboardAvoidingView>
           <SectionList
             sections={DATA}
+            refreshing={this.state.refreshing}
+            onRefresh={this.handlerRefresh}
             keyExtractor={(item, index) => item + index}
-            renderItem={({ item, section: {state} }) =>  <FriendRequest state={state} user_id={item.user_id} item={item} />}
+            renderItem={({ item, section: {state} }) =>  <FriendRequest reload={handlerRefresh} state={state} user_id={item.user_id} item={item} />}
             renderSectionHeader={({ section: { title } }) => (
               <Text style={styles.header}>{title}</Text>
             )}
